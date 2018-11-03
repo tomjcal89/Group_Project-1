@@ -1,22 +1,51 @@
-           
            var api_key = "06T1HtKGcNnaCMel55RhqPd1NsG8GJiIZFYPuXSX3RIaUcxOdltKNkSnhI-EYlm4Nqvsjv-tqPEBL2ytT1PIauam3m11R3y6smUfqUUhUBi_skHvOcANf9FWu5vWW3Yx"
 
 
-           function displayZomato() {
 
-               var queryURL = "https://developers.zomato.com/api/v2.1/categories"
+           function randomizer() {
+               var queryURL = "https://developers.zomato.com/api/v2.1/search?lat=37.791103&lon=-122.394038&radius=3200&category=breakfast%2C%20lunch%2C%20dinner"
 
                $.ajax({
                    url: queryURL,
                    headers: {
-                    'Accept': 'application/json',
-                    'user-key': '3a3df368b2259dd907eb09bb356cf09d'
+                       'Accept': 'application/json',
+                       'user-key': '3a3df368b2259dd907eb09bb356cf09d'
                    },
                    method: "GET"
                }).then(function (response) {
                    console.log(response);
 
+
+                   // From the ajax response the HTML page will show a featured photo, the name of the restaurant, address, type of cusine, cost, and rating-text
+                   var resp_rest = response.restaurants;
+                   console.log(resp_rest);
+                   var i = resp_rest[Math.floor(Math.random() * resp_rest.length)];
+                       console.log(i);
+                       console.log(i.restaurant.featured_image);
+                       console.log(i.restaurant.name);
+                       console.log(i.restaurant.location.address);
+                       console.log(i.restaurant.cuisines);
+                       console.log(i.restaurant.average_cost_for_two);
+                       console.log(i.restaurant.user_rating.rating_text);
+
+                       var featured = $("<img>");
+                       featured.addClass("image");
+                       featured.attr("src", i.restaurant.featured_image);
+                       featured.attr("width", "300px")
+                       $("#featured").html(featured);
+
+
+                       $("#name").html(i.restaurant.name);
+                       $("#add").html(i.restaurant.location.address);
+                       $("#cuisine").html(i.restaurant.cuisines);
+                       $("#cost").html(i.restaurant.average_cost_for_two);
+                       $("#rating").html(i.restaurant.user_rating.rating_text);
+                       
+
+
+                   
                })
-            }
-            displayZomato();
-            
+
+           }
+
+           randomizer();
