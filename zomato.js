@@ -1,5 +1,5 @@
 var api_key = "06T1HtKGcNnaCMel55RhqPd1NsG8GJiIZFYPuXSX3RIaUcxOdltKNkSnhI-EYlm4Nqvsjv-tqPEBL2ytT1PIauam3m11R3y6smUfqUUhUBi_skHvOcANf9FWu5vWW3Yx"
-
+var coordinates;
 
 function randomizer(lat, long) {
     var queryURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + long + "&radius=3200&category=breakfast%2C%20lunch%2C%20dinner"
@@ -44,33 +44,27 @@ function randomizer(lat, long) {
 
     })
 
-    } 
-
-randomizer();
-
-
-
+}
 
 $("#button").on("click", function () {
     getLocation();
-    randomizer();
 })
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-        if(lat !== position.coords.latitude || long !== position.coords.longitude){
-            $(".hide-show").hide();
+        if (coordinates) {
+            randomizer(coordinates.lat, coordinates.long);
+        } else {
+            navigator.geolocation.getCurrentPosition(showPosition);
         }
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
     }
 }
 
 function showPosition(position) {
     var lat = position.coords.latitude;
-    console.log(lat)
+    console.log(lat);
     var long = position.coords.longitude;
-    console.log(long)
+    console.log(long);
+    coordinates = {lat, long};
     randomizer(lat, long);
 }
