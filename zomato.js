@@ -81,6 +81,29 @@ function randomizer(lat, long) {
         console.log(latLong)
           
         // GOOGLE MAPS END--------------------
+
+        var searchBox = new google.maps.places.SearchBox(document.getElementById("mapsearch"));
+      
+          google.maps.event.addListener(searchBox, "places_changed", function () {
+            var places = searchBox.getPlaces();
+      
+            var bounds = new google.maps.LatLngBounds();
+            var place;
+      
+            for (var i = 0; place = places[i]; i++) {
+              bounds.extend(place.geometry.location);
+              marker.setPosition(place.geometry.location);
+            }
+            map.fitBounds(bounds);
+            map.setZoom(16);
+
+            console.log(map.center.lat())
+            console.log(map.center.lng())
+            var lat = map.center.lat()
+            var long = map.center.lng()
+            randomizer(lat, long)
+          });
+          
     
     });
 
@@ -105,7 +128,7 @@ function showPosition(position) {
     console.log(long);
     coordinates = {lat, long};
     randomizer(lat, long);
-}
+} 
 //displaying a different restaurant if you dont like the one that is displayed
 $("#button2").on("click", function(){
         if (navigator.geolocation) {
@@ -116,6 +139,7 @@ $("#button2").on("click", function(){
             }
         }
     });
+    
 
 
 
